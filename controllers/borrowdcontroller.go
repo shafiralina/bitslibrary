@@ -3,20 +3,16 @@ package controllers
 import (
 	"bitslibrary/models"
 	u "bitslibrary/utils"
-	"encoding/json"
+	"github.com/gorilla/mux"
 	"net/http"
 )
 
-var Borrowd = func(w http.ResponseWriter, r *http.Request) {
+var GetDetailBorrow = func(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	id := (params["id"])
 
-	borrowd := &models.Borrowd{}
-
-	err := json.NewDecoder(r.Body).Decode(borrowd)
-	if err != nil {
-		u.Respond(w, u.Message(false, "Error while decoding request body"))
-		return
-	}
-
-	resp := borrowd.Create()
+	data := models.GetDetailBorrow(id)
+	resp := u.Message(true, "success")
+	resp["data"] = data
 	u.Respond(w, resp)
 }

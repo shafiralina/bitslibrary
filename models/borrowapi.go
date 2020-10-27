@@ -2,7 +2,6 @@ package models
 
 import (
 	u "bitslibrary/utils"
-	"fmt"
 	"strconv"
 )
 
@@ -11,31 +10,27 @@ type BorrowAPI struct {
 	Borrowd []Borrowd `json:"borrowd"`
 }
 
-//func (borrowapi *BorrowAPI) Validate() (map[string]interface{}, bool) {
-//	//Get stock by book_id
-//
-//	for _, x := range borrowapi.Borrowd {
-//		type ResultStock struct {
-//			Stock string
-//		}
-//		var resultstock ResultStock
-//		GetDB().Table("stocks").Select("qty").Where("book_id=?",x.BookId).Scan(&resultstock)
-//		fmt.Println("stock=", resultstock.Stock)
-//		fmt.Println("qty=", x.Qty)
-//		fmt.Println("book_id=", x.BookId)
-//
-//		stokbukuint, _ := strconv.Atoi(resultstock.Stock)
-//		if stokbukuint < x.Qty {
-//			return u.Message(false, "Books are out of stock!"), false
-//		}
-//	}
-//	return u.Message(true, "success"), true
-//}
+func (borrowapi *BorrowAPI) Validate() (map[string]interface{}, bool) {
+	//Get stock by book_id
+
+	for _, x := range borrowapi.Borrowd {
+		type ResultStock struct {
+			Qty int
+		}
+		var resultstock ResultStock
+		GetDB().Table("stocks").Select("qty").Where("book_id=?", x.BookId).Scan(&resultstock)
+
+		if resultstock.Qty < x.Qty {
+			return u.Message(false, "Books are out of stock!"), false
+		}
+	}
+	return u.Message(true, "success"), true
+}
 
 func (borrowapi *BorrowAPI) Create() map[string]interface{} {
-	//if resp, ok := borrowapi.Validate(); !ok {
-	//	return resp
-	//}
+	if resp, ok := borrowapi.Validate(); !ok {
+		return resp
+	}
 
 	borrow := borrowapi.Borrow
 
@@ -44,18 +39,14 @@ func (borrowapi *BorrowAPI) Create() map[string]interface{} {
 	for _, x := range borrowapi.Borrowd {
 		//pengurangan stock
 		type ResultStock struct {
-			Stock string
+			Qty int
 		}
 
 		var resultstock ResultStock
 		bookidstring := strconv.Itoa(x.BookId)
 		GetDB().Table("stocks").Select("qty").Where("book_id=?", bookidstring).Scan(&resultstock)
 
-		fmt.Println("INI STOCK =", resultstock.Stock)
-		fmt.Println("ini id book =", bookidstring)
-
-		stokbukuint, _ := strconv.Atoi(resultstock.Stock)
-		var stockcurrently = stokbukuint - x.Qty
+		var stockcurrently = resultstock.Qty - x.Qty
 		GetDB().Table("stocks").Where("book_id=?", x.BookId).Update("qty", stockcurrently)
 
 		x := Borrowd{BorrowId: borrow.ID, BookId: x.BookId, Qty: x.Qty, Subtotal: x.Subtotal, Price: x.Price}
@@ -65,3 +56,16 @@ func (borrowapi *BorrowAPI) Create() map[string]interface{} {
 	resp["borrowapi"] = borrowapi
 	return resp
 }
+
+//func Return(id string) map[string]interface{} {
+//
+//	GetDB().Table("borrows").Where("id=?", id).Update("status","F")
+//	t := time.Now()
+//	GetDB().Table("books").Where("id=?", id).Update("updated_at", t)
+//
+//	var result string
+//	now := time.Now()
+//	from,_ := time.Parse("2006-01-02", result)
+//	days := now.Sub(from) / (24 * time.Hour)
+//
+//}

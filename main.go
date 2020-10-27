@@ -23,7 +23,9 @@ func main() {
 	router.HandleFunc("/api/newest/book", controllers.GetNewestBooks).Methods("GET")
 	router.HandleFunc("/api/book/update/{id}", controllers.UpdateBook).Methods("PUT")
 	router.HandleFunc("/api/stock/new", controllers.CreateStock).Methods("POST")
-	router.HandleFunc("/api/borrow/new", controllers.Borrow).Methods("POST")
+	router.HandleFunc("/api/borrow/new", controllers.CreateBorrow).Methods("POST")
+	router.HandleFunc("/api/borrow/{id}", controllers.GetBorrow).Methods("GET")
+	router.HandleFunc("/api/borrow/detail/{id}", controllers.GetDetailBorrow).Methods("GET")
 
 	router.Use(app.JwtAuthentication)
 

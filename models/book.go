@@ -79,3 +79,8 @@ func Newest() []*Book {
 	GetDB().Table("books").Order("created_at desc").Limit(3).Find(&book)
 	return book
 }
+
+//func Popular() []*Book {
+//	book := make([]*Book, 0)
+//	GetDB().Table("borrows").
+//}

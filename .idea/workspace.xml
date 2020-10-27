@@ -1,7 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="42461f25-959f-4c5c-82ab-3e8623e9b004" name="Default Changelist" comment="" />
+    <list default="true" id="42461f25-959f-4c5c-82ab-3e8623e9b004" name="Default Changelist" comment="borrow almost done, stocks error">
+      <change afterPath="$PROJECT_DIR$/controllers/borrowapicontroller.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controllers/borrowcontroller.go" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/borrowcontroller.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controllers/borrowdcontroller.go" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/borrowdcontroller.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/book.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/book.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/borrow.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/borrow.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/borrowapi.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/borrowapi.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/borrowd.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/borrowd.go" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -15,7 +34,11 @@
     </option>
   </component>
   <component name="GOROOT" path="$PROJECT_DIR$/../.." />
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="ProjectId" id="1jG6UDZlu7YYUNAH1geb1IHQmvM" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -32,9 +55,42 @@
       <recent name="E:\golang\src\bitslibrary" />
     </key>
   </component>
+  <component name="RunManager">
+    <configuration name="go build bitslibrary" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
+      <module name="bitslibrary" />
+      <working_directory value="$PROJECT_DIR$" />
+      <kind value="PACKAGE" />
+      <filePath value="$PROJECT_DIR$/main.go" />
+      <package value="bitslibrary" />
+      <directory value="$PROJECT_DIR$" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Go Build.go build bitslibrary" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="borrow not yet" />
+    <MESSAGE value="borrow almost done, stocks error" />
+    <option name="LAST_COMMIT_MESSAGE" value="borrow almost done, stocks error" />
   </component>
   <component name="WindowStateProjectService">
     <state x="137" y="38" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1603705884065">
@@ -49,5 +105,41 @@
       <screen x="0" y="0" width="1366" height="768" />
     </state>
     <state x="507" y="303" key="Github.CreateGistDialog/0.0.1366.768@0.0.1366.768" timestamp="1603705628565" />
+    <state width="1323" height="238" key="GridCell.Tab.0.bottom" timestamp="1603780538393">
+      <screen x="0" y="0" width="1366" height="768" />
+    </state>
+    <state width="1323" height="238" key="GridCell.Tab.0.bottom/0.0.1366.768@0.0.1366.768" timestamp="1603780538393" />
+    <state width="1323" height="238" key="GridCell.Tab.0.center" timestamp="1603780538392">
+      <screen x="0" y="0" width="1366" height="768" />
+    </state>
+    <state width="1323" height="238" key="GridCell.Tab.0.center/0.0.1366.768@0.0.1366.768" timestamp="1603780538392" />
+    <state width="1323" height="238" key="GridCell.Tab.0.left" timestamp="1603780538391">
+      <screen x="0" y="0" width="1366" height="768" />
+    </state>
+    <state width="1323" height="238" key="GridCell.Tab.0.left/0.0.1366.768@0.0.1366.768" timestamp="1603780538391" />
+    <state width="1323" height="238" key="GridCell.Tab.0.right" timestamp="1603780538392">
+      <screen x="0" y="0" width="1366" height="768" />
+    </state>
+    <state width="1323" height="238" key="GridCell.Tab.0.right/0.0.1366.768@0.0.1366.768" timestamp="1603780538392" />
+    <state width="1323" height="238" key="GridCell.Tab.1.bottom" timestamp="1603780538394">
+      <screen x="0" y="0" width="1366" height="768" />
+    </state>
+    <state width="1323" height="238" key="GridCell.Tab.1.bottom/0.0.1366.768@0.0.1366.768" timestamp="1603780538394" />
+    <state width="1323" height="238" key="GridCell.Tab.1.center" timestamp="1603780538393">
+      <screen x="0" y="0" width="1366" height="768" />
+    </state>
+    <state width="1323" height="238" key="GridCell.Tab.1.center/0.0.1366.768@0.0.1366.768" timestamp="1603780538393" />
+    <state width="1323" height="238" key="GridCell.Tab.1.left" timestamp="1603780538393">
+      <screen x="0" y="0" width="1366" height="768" />
+    </state>
+    <state width="1323" height="238" key="GridCell.Tab.1.left/0.0.1366.768@0.0.1366.768" timestamp="1603780538393" />
+    <state width="1323" height="238" key="GridCell.Tab.1.right" timestamp="1603780538394">
+      <screen x="0" y="0" width="1366" height="768" />
+    </state>
+    <state width="1323" height="238" key="GridCell.Tab.1.right/0.0.1366.768@0.0.1366.768" timestamp="1603780538394" />
+    <state x="275" y="116" key="Vcs.Push.Dialog.v2" timestamp="1603706140531">
+      <screen x="0" y="0" width="1366" height="768" />
+    </state>
+    <state x="275" y="116" key="Vcs.Push.Dialog.v2/0.0.1366.768@0.0.1366.768" timestamp="1603706140531" />
   </component>
 </project>
