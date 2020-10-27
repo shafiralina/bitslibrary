@@ -82,5 +82,15 @@ func Newest() []*Book {
 
 //func Popular() []*Book {
 //	book := make([]*Book, 0)
-//	GetDB().Table("borrows").
+//
+//	//err := GetDB().Raw("SELECT a.* FROM books a ORDER BY coalesce((SELECT COUNT(book_id) FROM borrowds WHERE book_id = a.id GROUP BY book_id),0) DESC").Find(&book).Error
+//	subQuery := GetDB().Select("book_id").Where("book_id=1").Table("borrowds")
+//	GetDB().Order("() desc").Find(&book)
+//	//fmt.Println(book)
+//	//if err != nil {
+//	//	fmt.Println(err)
+//	//	return nil
+//	//}
+//
+//	return book
 //}

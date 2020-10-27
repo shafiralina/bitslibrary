@@ -3,11 +3,17 @@ package models
 import (
 	u "bitslibrary/utils"
 	"strconv"
+	"time"
 )
 
 type BorrowAPI struct {
 	Borrow  Borrow    `json:"borrow"`
 	Borrowd []Borrowd `json:"borrowd"`
+}
+
+type ReturnResponse struct {
+	Fineamt  int `json:"fineamt"`
+	LateDays int `json:"late_days"`
 }
 
 func (borrowapi *BorrowAPI) Validate() (map[string]interface{}, bool) {
@@ -57,15 +63,57 @@ func (borrowapi *BorrowAPI) Create() map[string]interface{} {
 	return resp
 }
 
-//func Return(id string) map[string]interface{} {
-//
-//	GetDB().Table("borrows").Where("id=?", id).Update("status","F")
-//	t := time.Now()
-//	GetDB().Table("books").Where("id=?", id).Update("updated_at", t)
-//
-//	var result string
-//	now := time.Now()
-//	from,_ := time.Parse("2006-01-02", result)
-//	days := now.Sub(from) / (24 * time.Hour)
-//
-//}
+func Return(id string) *ReturnResponse {
+	response := &ReturnResponse{}
+
+	GetDB().Table("borrows").Where("id=?", id).Update("status", "F")
+	t := time.Now()
+	GetDB().Table("books").Where("id=?", id).Update("updated_at", t)
+
+	type Result struct {
+		EndDate string
+	}
+
+	var result Result
+	GetDB().Table("borrows").Select("end_date").Where("id=?", id).Scan(&result)
+
+	now := time.Now()
+	from, _ := time.Parse("2006-01-02", result.EndDate)
+	days := now.Sub(from) / (24 * time.Hour)
+
+	//fmt.Println("hari=",int(days))
+
+	var denda int
+	var total = 0
+
+	borrowd := make([]*Borrowd, 0)
+	GetDB().Table("borrowds").Where("borrow_id=?", id).Find(&borrowd)
+	for _, x := range borrowd {
+		type Result struct {
+			Fineamt int
+		}
+
+		var result Result
+		GetDB().Table("books").Select("fineamt").Where("id=?", x.BookId).Scan(&result)
+
+		denda = int(days) * result.Fineamt * x.Qty
+		total = total + denda
+
+		//penambahan stock
+		type ResultStock struct {
+			Qty int
+		}
+
+		var resultstock ResultStock
+		bookidstring := strconv.Itoa(x.BookId)
+		GetDB().Table("stocks").Select("qty").Where("book_id=?", bookidstring).Scan(&resultstock)
+
+		var stockcurrently = resultstock.Qty + x.Qty
+		GetDB().Table("stocks").Where("book_id=?", x.BookId).Update("qty", stockcurrently)
+	}
+
+	response.LateDays = int(days)
+	response.Fineamt = total
+	return response
+
+}
