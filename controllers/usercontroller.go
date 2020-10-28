@@ -9,23 +9,32 @@ import (
 )
 
 var GetUsers = func(w http.ResponseWriter, r *http.Request) {
-	data := models.GetAllUser()
+	conn := models.GetDB()
+	defer conn.Close()
+
+	data := models.GetAllUser(conn)
 	resp := u.Message(true, "success")
 	resp["data"] = data
 	u.Respond(w, resp)
 }
 
 var GetUser = func(w http.ResponseWriter, r *http.Request) {
+	conn := models.GetDB()
+	defer conn.Close()
+
 	params := mux.Vars(r)
 	id := (params["id"])
 
-	data := models.GetUser(id)
+	data := models.GetUser(conn, id)
 	resp := u.Message(true, "success")
 	resp["data"] = data
 	u.Respond(w, resp)
 }
 
 var CreateAccount = func(w http.ResponseWriter, r *http.Request) {
+	conn := models.GetDB()
+	defer conn.Close()
+
 	user := &models.User{}
 	err := json.NewDecoder(r.Body).Decode(user)
 	if err != nil {
@@ -33,11 +42,14 @@ var CreateAccount = func(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	resp := user.Create()
+	resp := user.Create(conn)
 	u.Respond(w, resp)
 }
 
 var Authenticate = func(w http.ResponseWriter, r *http.Request) {
+	conn := models.GetDB()
+	defer conn.Close()
+
 	user := &models.User{}
 	err := json.NewDecoder(r.Body).Decode(user)
 	if err != nil {
@@ -45,11 +57,14 @@ var Authenticate = func(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	resp := models.Login(user.Email, user.Password)
+	resp := models.Login(conn, user.Mobile, user.Email, user.Password)
 	u.Respond(w, resp)
 }
 
 var UpdateUser = func(w http.ResponseWriter, r *http.Request) {
+	conn := models.GetDB()
+	defer conn.Close()
+
 	params := mux.Vars(r)
 	id := (params["id"])
 
@@ -59,6 +74,6 @@ var UpdateUser = func(w http.ResponseWriter, r *http.Request) {
 		u.Respond(w, u.Message(false, "Error while decoding request body"))
 		return
 	}
-	resp := data.Update(id)
+	resp := data.Update(conn, id)
 	u.Respond(w, resp)
 }

@@ -9,27 +9,38 @@ import (
 )
 
 var GetBooks = func(w http.ResponseWriter, r *http.Request) {
-	data := models.GetAllBook()
+	conn := models.GetDB()
+	defer conn.Close()
+
+	data := models.GetAllBook(conn)
 	resp := u.Message(true, "success")
 	resp["data"] = data
 	u.Respond(w, resp)
 }
 
 var GetNewestBooks = func(w http.ResponseWriter, r *http.Request) {
-	data := models.Newest()
+	conn := models.GetDB()
+	defer conn.Close()
+
+	data := models.Newest(conn)
 	resp := u.Message(true, "success")
 	resp["data"] = data
 	u.Respond(w, resp)
 }
 
 var GetPopularBooks = func(w http.ResponseWriter, r *http.Request) {
-	data := models.Popular()
+	conn := models.GetDB()
+	defer conn.Close()
+
+	data := models.Popular(conn)
 	resp := u.Message(true, "success")
 	resp["data"] = data
 	u.Respond(w, resp)
 }
 
 var CreateBook = func(w http.ResponseWriter, r *http.Request) {
+	conn := models.GetDB()
+	defer conn.Close()
 
 	book := &models.Book{}
 
@@ -39,15 +50,18 @@ var CreateBook = func(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	resp := book.Create()
+	resp := book.Create(conn)
 	u.Respond(w, resp)
 }
 
 var GetBook = func(w http.ResponseWriter, r *http.Request) {
+	conn := models.GetDB()
+	defer conn.Close()
+
 	params := mux.Vars(r)
 	id := (params["id"])
 
-	data := models.GetBook(id)
+	data := models.GetBook(conn, id)
 	resp := u.Message(true, "success")
 	resp["data"] = data
 	u.Respond(w, resp)

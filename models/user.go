@@ -33,17 +33,19 @@ func (User) TableName() string {
 }
 
 func (user *User) Validate() (map[string]interface{}, bool) {
+	user.Email = strings.ToLower(user.Email)
+
 	if !strings.Contains(user.Email, "@") {
 		return u.Message(false, "Email address is required"), false
 	}
-	//lower case email, login bisa pake mobile atau email
+
 	if len(user.Password) < 6 {
 		return u.Message(false, "Password is required"), false
 	}
-
 	temp := &User{}
 
 	err := GetDB().Table("users").Where("email=?", user.Email).First(temp).Error
+
 	if err != nil && err != gorm.ErrRecordNotFound {
 		return u.Message(false, "Connection error. Please try."), false
 	}
@@ -51,18 +53,28 @@ func (user *User) Validate() (map[string]interface{}, bool) {
 		return u.Message(false, "Email address already in use by another user."), false
 	}
 
+	temp2 := &User{}
+	err2 := GetDB().Table("users").Where("mobile=?", user.Mobile).First(temp2).Error
+	if err2 != nil && err2 != gorm.ErrRecordNotFound {
+		return u.Message(false, "Connection error. Please try."), false
+	}
+	if temp2.Mobile != "" {
+		return u.Message(false, "Mobile already in use by another user."), false
+	}
+
 	return u.Message(false, "Requirement passed"), true
 }
 
-func (user *User) Create() map[string]interface{} {
+func (user *User) Create(conn *gorm.DB) map[string]interface{} {
 	if resp, ok := user.Validate(); !ok {
 		return resp
 	}
 
+	user.Email = strings.ToLower(user.Email)
 	hashedPassword, _ := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
 	user.Password = string(hashedPassword)
 
-	GetDB().Create(user)
+	conn.Create(user)
 
 	if user.Id <= 0 {
 		return u.Message(false, "Failed to create account, connection error.")
@@ -78,21 +90,32 @@ func (user *User) Create() map[string]interface{} {
 	response := u.Message(true, "Account has been created")
 	response["user"] = user
 
-	defer db.Close()
 	return response
 }
 
-func Login(email, password string) map[string]interface{} {
+func Login(conn *gorm.DB, mobile, email, password string) map[string]interface{} {
 	user := &User{}
-	err := GetDB().Table("users").Where("email = ?", email).First(user).Error
-	if err != nil {
-		if err == gorm.ErrRecordNotFound {
-			return u.Message(false, "Email address not found")
+
+	if mobile == "" {
+		email = strings.ToLower(email)
+		err := conn.Table("users").Where("email = ?", email).First(user).Error
+		if err != nil {
+			if err == gorm.ErrRecordNotFound {
+				return u.Message(false, "Email address not found")
+			}
+			return u.Message(false, "Connection error. Please retry.")
 		}
-		return u.Message(false, "Connection error. Please retry.")
+	} else {
+		err2 := conn.Table("users").Where("mobile = ?", mobile).First(user).Error
+		if err2 != nil {
+			if err2 == gorm.ErrRecordNotFound {
+				return u.Message(false, "Mobile not found")
+			}
+			return u.Message(false, "Connection error. Please retry.")
+		}
 	}
 
-	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
+	err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
 	if err != nil && err == bcrypt.ErrMismatchedHashAndPassword {
 		return u.Message(false, "Invalid login credentials. Please try again.")
 	}
@@ -107,44 +130,40 @@ func Login(email, password string) map[string]interface{} {
 	resp := u.Message(true, "Logged In")
 	resp["user"] = user
 
-	defer db.Close()
 	return resp
 }
 
-func GetAllUser() []*User {
+func GetAllUser(conn *gorm.DB) []*User {
 	user := make([]*User, 0)
-	err := GetDB().Find(&user).Error
+	err := conn.Find(&user).Error
 	if err != nil {
 		fmt.Println(err)
 		return nil
 	}
 
-	defer db.Close()
 	return user
 }
 
-func GetUser(id string) *User {
+func GetUser(conn *gorm.DB, id string) *User {
 	user := &User{}
-	err := GetDB().Where("id=?", id).First(user).Error
+	err := conn.Where("id=?", id).First(user).Error
 	if err != nil {
 		return nil
 	}
 
-	defer db.Close()
 	return user
 }
 
-func (user *User) Update(id string) map[string]interface{} {
+func (user *User) Update(conn *gorm.DB, id string) map[string]interface{} {
 	hashedPassword, _ := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
 	user.Password = string(hashedPassword)
 
-	GetDB().Table("users").Where("id=?", id).Update(user)
-	t := time.Now()
-	GetDB().Table("users").Where("id=?", id).Update("updated_at", t)
+	user1 := &User{}
+	conn.Where("id=?", id).First(&user1)
+	conn.Model(&user1).Updates(user)
 
 	resp := u.Message(true, "success")
 	resp["user"] = user
 
-	defer db.Close()
 	return resp
 }

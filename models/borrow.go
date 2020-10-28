@@ -1,6 +1,9 @@
 package models
 
-import "time"
+import (
+	"github.com/jinzhu/gorm"
+	"time"
+)
 
 type Borrow struct {
 	Id        uint      `gorm:"primaryKey;autoIncrement:true"`
@@ -12,16 +15,17 @@ type Borrow struct {
 	Status    string    `json:"status"`
 	Total     float64   `json:"total"`
 }
+
 func (Borrow) TableName() string {
 	return "borrows"
 }
 
-func GetBorrow(id string) *Borrow {
+func GetBorrow(conn *gorm.DB, id string) *Borrow {
 	borrow := &Borrow{}
-	err := GetDB().Where("id=?", id).First(borrow).Error
+	err := conn.Where("id=?", id).First(borrow).Error
 	if err != nil {
 		return nil
 	}
-	defer db.Close()
+
 	return borrow
 }

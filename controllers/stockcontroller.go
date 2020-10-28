@@ -8,6 +8,8 @@ import (
 )
 
 var CreateStock = func(w http.ResponseWriter, r *http.Request) {
+	conn := models.GetDB()
+	defer conn.Close()
 
 	stock := &models.Stock{}
 
@@ -17,6 +19,6 @@ var CreateStock = func(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	resp := stock.Create()
+	resp := stock.Create(conn)
 	u.Respond(w, resp)
 }

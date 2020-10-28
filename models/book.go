@@ -37,49 +37,42 @@ func (book *Book) Validate() (map[string]interface{}, bool) {
 	return u.Message(true, "success"), true
 }
 
-func (book *Book) Create() map[string]interface{} {
+func (book *Book) Create(conn *gorm.DB) map[string]interface{} {
 
 	if resp, ok := book.Validate(); !ok {
 		return resp
 	}
 
-	GetDB().Create(book)
+	conn.Create(book)
 	resp := u.Message(true, "success")
 	resp["book"] = book
 
-	defer db.Close()
 	return resp
 }
 
-func GetBook(id string) *Book {
+func GetBook(conn *gorm.DB, id string) *Book {
 	book := &Book{}
-	err := GetDB().Where("id=?", id).First(book).Error
+	err := conn.Where("id=?", id).First(book).Error
 	if err != nil {
 		return nil
 	}
-
-	defer db.Close()
 	return book
 }
 
-func GetAllBook() []*Book {
+func GetAllBook(conn *gorm.DB) []*Book {
 	book := make([]*Book, 0)
-	err := GetDB().Find(&book).Error
+	err := conn.Find(&book).Error
 	if err != nil {
 		fmt.Println(err)
 		return nil
 	}
-	defer db.Close()
 	return book
 }
 
 func (book *Book) Update(conn *gorm.DB, id string) map[string]interface{} {
 	book1 := &Book{}
-	conn.Debug().Where("id=?", id).First(&book1)
-	book1 = book
-	conn.Debug().Model(&book1).Updates(book)
-	//t := time.Now()
-	//GetDB().Table("books").Where("id=?", id).Update("updated_at", t)
+	conn.Where("id=?", id).First(&book1)
+	conn.Model(&book1).Updates(book)
 
 	resp := u.Message(true, "success")
 	resp["book"] = book1
@@ -87,19 +80,15 @@ func (book *Book) Update(conn *gorm.DB, id string) map[string]interface{} {
 	return resp
 }
 
-func Newest() []*Book {
+func Newest(conn *gorm.DB) []*Book {
 	book := make([]*Book, 0)
-	GetDB().Order("created_at desc").Limit(3).Find(&book)
-
-	defer db.Close()
+	conn.Order("created_at desc").Limit(3).Find(&book)
 	return book
 }
 
-func Popular() []*Book {
+func Popular(conn *gorm.DB) []*Book {
 	bookA := make([]*Book, 0)
-
-	GetDB().Debug().Raw("SELECT a.* FROM books a ORDER BY coalesce((SELECT COUNT(book_id) FROM borrowds WHERE book_id = a.id GROUP BY book_id),0) deSC").Find(&bookA)
+	conn.Debug().Raw("SELECT a.* FROM books a ORDER BY coalesce((SELECT COUNT(book_id) FROM borrowds WHERE book_id = a.id GROUP BY book_id),0) deSC").Find(&bookA)
 	//cari di borrowds dulu, trus baru di join sama books
-	defer db.Close()
 	return bookA
 }

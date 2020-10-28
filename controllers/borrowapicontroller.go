@@ -9,6 +9,8 @@ import (
 )
 
 var CreateBorrow = func(w http.ResponseWriter, r *http.Request) {
+	conn := models.GetDB()
+	defer conn.Close()
 
 	borrowapi := &models.BorrowAPI{}
 
@@ -18,15 +20,18 @@ var CreateBorrow = func(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	resp := borrowapi.Create()
+	resp := borrowapi.Create(conn)
 	u.Respond(w, resp)
 }
 
 var Return = func(w http.ResponseWriter, r *http.Request) {
+	conn := models.GetDB()
+	//defer conn.Close()
+
 	params := mux.Vars(r)
 	id := (params["id"])
 
-	data := models.Return(id)
+	data := models.Return(conn, id)
 	resp := u.Message(true, "success")
 	resp["data"] = data
 	u.Respond(w, resp)
