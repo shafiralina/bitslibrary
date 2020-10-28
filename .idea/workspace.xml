@@ -15,17 +15,7 @@
     </select>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="42461f25-959f-4c5c-82ab-3e8623e9b004" name="Default Changelist" comment="borrow almost done, stocks error">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/bookcontroller.go" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/bookcontroller.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/book.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/book.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/borrow.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/borrow.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/borrowapi.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/borrowapi.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/borrowd.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/borrowd.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/stock.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/stock.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/user.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/user.go" afterDir="false" />
-    </list>
+    <list default="true" id="42461f25-959f-4c5c-82ab-3e8623e9b004" name="Default Changelist" comment="borrow almost done, stocks error" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -97,7 +87,8 @@
     <MESSAGE value="borrow almost done, stocks error" />
     <MESSAGE value="belum return, popular" />
     <MESSAGE value="return done" />
-    <option name="LAST_COMMIT_MESSAGE" value="return done" />
+    <MESSAGE value="all done" />
+    <option name="LAST_COMMIT_MESSAGE" value="all done" />
   </component>
   <component name="WindowStateProjectService">
     <state x="137" y="38" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1603705884065">
@@ -144,9 +135,9 @@
       <screen x="0" y="0" width="1366" height="768" />
     </state>
     <state width="1323" height="238" key="GridCell.Tab.1.right/0.0.1366.768@0.0.1366.768" timestamp="1603780538394" />
-    <state x="275" y="116" key="Vcs.Push.Dialog.v2" timestamp="1603813753487">
+    <state x="275" y="116" key="Vcs.Push.Dialog.v2" timestamp="1603852472559">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
-    <state x="275" y="116" key="Vcs.Push.Dialog.v2/0.0.1366.768@0.0.1366.768" timestamp="1603813753487" />
+    <state x="275" y="116" key="Vcs.Push.Dialog.v2/0.0.1366.768@0.0.1366.768" timestamp="1603852472559" />
   </component>
 </project>
