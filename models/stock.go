@@ -6,11 +6,15 @@ import (
 )
 
 type Stock struct {
-	Id        int64     `gorm:"primaryKey;autoIncrement:false"`
-	CreatedAt time.Time `gorm:"autoCreateTime"`
-	UpdatedAt time.Time `gorm:"autoUpdateTime"`
+	Id        int64     `gorm:"primaryKey;autoIncrement:true"`
+	CreatedAt time.Time `gorm:"default:current_timestamp"`
+	UpdatedAt time.Time `gorm:"default:current_timestamp"`
 	Qty       uint      `json:"quantity"`
 	BookId    uint      `json:"book_id"`
+}
+
+func (Stock) TableName() string {
+	return "stocks"
 }
 
 func (stock *Stock) Validate() (map[string]interface{}, bool) {
@@ -31,9 +35,11 @@ func (stock *Stock) Create() map[string]interface{} {
 		return resp
 	}
 
-	GetDB().Table("stocks").Create(stock)
+	GetDB().Create(stock)
 
 	resp := u.Message(true, "success")
 	resp["stock"] = stock
+
+	defer db.Close()
 	return resp
 }

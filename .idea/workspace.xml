@@ -18,6 +18,14 @@
     <list default="true" id="42461f25-959f-4c5c-82ab-3e8623e9b004" name="Default Changelist" comment="borrow almost done, stocks error">
       <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controllers/bookcontroller.go" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/bookcontroller.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/base.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/base.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/book.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/book.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/borrow.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/borrow.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/borrowapi.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/borrowapi.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/borrowd.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/borrowd.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/stock.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/stock.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/user.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/user.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

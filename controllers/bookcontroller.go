@@ -54,6 +54,9 @@ var GetBook = func(w http.ResponseWriter, r *http.Request) {
 }
 
 var UpdateBook = func(w http.ResponseWriter, r *http.Request) {
+	conn := models.GetDB()
+	defer conn.Close()
+
 	params := mux.Vars(r)
 	id := (params["id"])
 
@@ -63,6 +66,6 @@ var UpdateBook = func(w http.ResponseWriter, r *http.Request) {
 		u.Respond(w, u.Message(false, "Error while decoding request body"))
 		return
 	}
-	resp := data.Update(id)
+	resp := data.Update(conn, id)
 	u.Respond(w, resp)
 }

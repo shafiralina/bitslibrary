@@ -17,9 +17,9 @@ type Token struct {
 }
 
 type User struct {
-	Id        uint      `gorm:"primaryKey;autoIncrement:false"`
-	CreatedAt time.Time `gorm:"autoCreateTime"`
-	UpdatedAt time.Time `gorm:"autoUpdateTime"`
+	Id        uint      `gorm:"primaryKey;autoIncrement:true"`
+	CreatedAt time.Time `gorm:"default:current_timestamp"`
+	UpdatedAt time.Time `gorm:"default:current_timestamp"`
 	Email     string    `json:"email"`
 	Name      string    `json:"name"`
 	Mobile    string    `json:"mobile"`
@@ -28,11 +28,15 @@ type User struct {
 	Token     string    `json:"token";sql:"-"`
 }
 
+func (User) TableName() string {
+	return "users"
+}
+
 func (user *User) Validate() (map[string]interface{}, bool) {
 	if !strings.Contains(user.Email, "@") {
 		return u.Message(false, "Email address is required"), false
 	}
-
+	//lower case email, login bisa pake mobile atau email
 	if len(user.Password) < 6 {
 		return u.Message(false, "Password is required"), false
 	}
@@ -73,6 +77,8 @@ func (user *User) Create() map[string]interface{} {
 
 	response := u.Message(true, "Account has been created")
 	response["user"] = user
+
+	defer db.Close()
 	return response
 }
 
@@ -100,25 +106,31 @@ func Login(email, password string) map[string]interface{} {
 
 	resp := u.Message(true, "Logged In")
 	resp["user"] = user
+
+	defer db.Close()
 	return resp
 }
 
 func GetAllUser() []*User {
 	user := make([]*User, 0)
-	err := GetDB().Table("users").Find(&user).Error
+	err := GetDB().Find(&user).Error
 	if err != nil {
 		fmt.Println(err)
 		return nil
 	}
+
+	defer db.Close()
 	return user
 }
 
 func GetUser(id string) *User {
 	user := &User{}
-	err := GetDB().Table("users").Where("id=?", id).First(user).Error
+	err := GetDB().Where("id=?", id).First(user).Error
 	if err != nil {
 		return nil
 	}
+
+	defer db.Close()
 	return user
 }
 
@@ -132,5 +144,7 @@ func (user *User) Update(id string) map[string]interface{} {
 
 	resp := u.Message(true, "success")
 	resp["user"] = user
+
+	defer db.Close()
 	return resp
 }

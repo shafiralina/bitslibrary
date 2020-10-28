@@ -3,13 +3,14 @@ package models
 import (
 	u "bitslibrary/utils"
 	"fmt"
+	"github.com/jinzhu/gorm"
 	"time"
 )
 
 type Book struct {
-	Id        int64     `gorm:"primaryKey;autoIncrement:false"`
-	CreatedAt time.Time `gorm:"autoCreateTime"`
-	UpdatedAt time.Time `gorm:"autoUpdateTime"`
+	Id        int64     `gorm:"primaryKey;autoIncrement:true"`
+	CreatedAt time.Time `gorm:"default:current_timestamp"`
+	UpdatedAt time.Time `gorm:"default:current_timestamp"`
 	Name      string    `json:"name"`
 	Author    string    `json:"author"`
 	Isbn      string    `json:"isbn"`
@@ -21,6 +22,10 @@ type Book struct {
 	Sinopsis  string    `json:"sinopsis"`
 	Price     float64   `json:"price"`
 	Fineamt   float64   `json:"denda"`
+}
+
+func (Book) TableName() string {
+	return "books"
 }
 
 func (book *Book) Validate() (map[string]interface{}, bool) {
@@ -38,46 +43,55 @@ func (book *Book) Create() map[string]interface{} {
 		return resp
 	}
 
-	GetDB().Table("books").Create(book)
-
+	GetDB().Create(book)
 	resp := u.Message(true, "success")
 	resp["book"] = book
+
+	defer db.Close()
 	return resp
 }
 
 func GetBook(id string) *Book {
 	book := &Book{}
-	err := GetDB().Table("books").Where("id=?", id).First(book).Error
+	err := GetDB().Where("id=?", id).First(book).Error
 	if err != nil {
 		return nil
 	}
+
+	defer db.Close()
 	return book
 }
 
 func GetAllBook() []*Book {
 	book := make([]*Book, 0)
-	err := GetDB().Table("books").Find(&book).Error
+	err := GetDB().Find(&book).Error
 	if err != nil {
 		fmt.Println(err)
 		return nil
 	}
+	defer db.Close()
 	return book
 }
 
-func (book *Book) Update(id string) map[string]interface{} {
-
-	GetDB().Table("books").Where("id=?", id).Update(book)
-	t := time.Now()
-	GetDB().Table("books").Where("id=?", id).Update("updated_at", t)
+func (book *Book) Update(conn *gorm.DB, id string) map[string]interface{} {
+	book1 := &Book{}
+	conn.Debug().Where("id=?", id).First(&book1)
+	book1 = book
+	conn.Debug().Model(&book1).Updates(book)
+	//t := time.Now()
+	//GetDB().Table("books").Where("id=?", id).Update("updated_at", t)
 
 	resp := u.Message(true, "success")
-	resp["book"] = book
+	resp["book"] = book1
+
 	return resp
 }
 
 func Newest() []*Book {
 	book := make([]*Book, 0)
-	GetDB().Table("books").Order("created_at desc").Limit(3).Find(&book)
+	GetDB().Order("created_at desc").Limit(3).Find(&book)
+
+	defer db.Close()
 	return book
 }
 
@@ -85,6 +99,7 @@ func Popular() []*Book {
 	bookA := make([]*Book, 0)
 
 	GetDB().Debug().Raw("SELECT a.* FROM books a ORDER BY coalesce((SELECT COUNT(book_id) FROM borrowds WHERE book_id = a.id GROUP BY book_id),0) deSC").Find(&bookA)
-
+	//cari di borrowds dulu, trus baru di join sama books
+	defer db.Close()
 	return bookA
 }

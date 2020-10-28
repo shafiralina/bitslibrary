@@ -15,13 +15,7 @@ func init() {
 	if e != nil {
 		fmt.Print(e)
 	}
-	//jadi kalo pertama run, dia create users
-	//tapi pas panggil api, butuhnya user
-	//tadi misal yg udh ke create itu tak rename jadi user
-	//trus ku panggil api, dia baru bisa. coding bikin tablemana
 
-	//gak tau, pokoknya base.go ini buat connect database
-	//modelnya ya di user.go
 	username := os.Getenv("db_user")
 	password := os.Getenv("db_pass")
 	dbName := os.Getenv("db_name")

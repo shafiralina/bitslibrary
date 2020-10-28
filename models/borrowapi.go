@@ -25,11 +25,12 @@ func (borrowapi *BorrowAPI) Validate() (map[string]interface{}, bool) {
 		}
 		var resultstock ResultStock
 		GetDB().Table("stocks").Select("qty").Where("book_id=?", x.BookId).Scan(&resultstock)
-
+		//bisa pake find, gausa select
 		if resultstock.Qty < x.Qty {
 			return u.Message(false, "Books are out of stock!"), false
 		}
 	}
+	defer db.Close()
 	return u.Message(true, "success"), true
 }
 
@@ -61,6 +62,7 @@ func (borrowapi *BorrowAPI) Create() map[string]interface{} {
 	}
 	resp := u.Message(true, "success")
 	resp["borrowapi"] = borrowapi
+	defer db.Close()
 	return resp
 }
 
@@ -115,6 +117,7 @@ func Return(id string) *ReturnResponse {
 
 	response.LateDays = int(days)
 	response.Fineamt = total
-	return response
 
+	defer db.Close()
+	return response
 }
