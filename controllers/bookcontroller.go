@@ -22,12 +22,12 @@ var GetNewestBooks = func(w http.ResponseWriter, r *http.Request) {
 	u.Respond(w, resp)
 }
 
-//var GetPopularBooks = func(w http.ResponseWriter, r *http.Request) {
-//	data := models.Popular()
-//	resp := u.Message(true, "success")
-//	resp["data"] = data
-//	u.Respond(w, resp)
-//}
+var GetPopularBooks = func(w http.ResponseWriter, r *http.Request) {
+	data := models.Popular()
+	resp := u.Message(true, "success")
+	resp["data"] = data
+	u.Respond(w, resp)
+}
 
 var CreateBook = func(w http.ResponseWriter, r *http.Request) {
 

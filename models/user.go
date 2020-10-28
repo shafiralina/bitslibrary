@@ -17,13 +17,15 @@ type Token struct {
 }
 
 type User struct {
-	gorm.Model
-	Email    string `json:"email"`
-	Name     string `json:"name"`
-	Mobile   string `json:"mobile"`
-	Address  string `json:"address"`
-	Password string `json:"password"`
-	Token    string `json:"token";sql:"-"`
+	Id        uint      `gorm:"primaryKey;autoIncrement:false"`
+	CreatedAt time.Time `gorm:"autoCreateTime"`
+	UpdatedAt time.Time `gorm:"autoUpdateTime"`
+	Email     string    `json:"email"`
+	Name      string    `json:"name"`
+	Mobile    string    `json:"mobile"`
+	Address   string    `json:"address"`
+	Password  string    `json:"password"`
+	Token     string    `json:"token";sql:"-"`
 }
 
 func (user *User) Validate() (map[string]interface{}, bool) {
@@ -58,11 +60,11 @@ func (user *User) Create() map[string]interface{} {
 
 	GetDB().Create(user)
 
-	if user.ID <= 0 {
+	if user.Id <= 0 {
 		return u.Message(false, "Failed to create account, connection error.")
 	}
 
-	tk := &Token{UserId: user.ID}
+	tk := &Token{UserId: user.Id}
 	token := jwt.NewWithClaims(jwt.GetSigningMethod("HS256"), tk)
 	tokenString, _ := token.SignedString([]byte(os.Getenv("token_password")))
 	user.Token = tokenString
@@ -91,7 +93,7 @@ func Login(email, password string) map[string]interface{} {
 
 	user.Password = ""
 
-	tk := &Token{UserId: user.ID}
+	tk := &Token{UserId: user.Id}
 	token := jwt.NewWithClaims(jwt.GetSigningMethod("HS256"), tk)
 	tokenString, _ := token.SignedString([]byte(os.Getenv("token_password")))
 	user.Token = tokenString

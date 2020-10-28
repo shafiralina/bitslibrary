@@ -54,8 +54,9 @@ func (borrowapi *BorrowAPI) Create() map[string]interface{} {
 
 		var stockcurrently = resultstock.Qty - x.Qty
 		GetDB().Table("stocks").Where("book_id=?", x.BookId).Update("qty", stockcurrently)
+		GetDB().Table("stocks").Where("book_id=?", x.BookId).Update("updated_at", time.Now())
 
-		x := Borrowd{BorrowId: borrow.ID, BookId: x.BookId, Qty: x.Qty, Subtotal: x.Subtotal, Price: x.Price}
+		x := Borrowd{BorrowId: borrow.Id, BookId: x.BookId, Qty: x.Qty, Subtotal: x.Subtotal, Price: x.Price}
 		GetDB().Table("borrowds").Create(&x)
 	}
 	resp := u.Message(true, "success")
@@ -80,8 +81,6 @@ func Return(id string) *ReturnResponse {
 	now := time.Now()
 	from, _ := time.Parse("2006-01-02", result.EndDate)
 	days := now.Sub(from) / (24 * time.Hour)
-
-	//fmt.Println("hari=",int(days))
 
 	var denda int
 	var total = 0
@@ -110,6 +109,8 @@ func Return(id string) *ReturnResponse {
 
 		var stockcurrently = resultstock.Qty + x.Qty
 		GetDB().Table("stocks").Where("book_id=?", x.BookId).Update("qty", stockcurrently)
+
+		GetDB().Table("stocks").Where("book_id=?", x.BookId).Update("updated_at", time.Now())
 	}
 
 	response.LateDays = int(days)

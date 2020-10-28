@@ -3,23 +3,24 @@ package models
 import (
 	u "bitslibrary/utils"
 	"fmt"
-	"github.com/jinzhu/gorm"
 	"time"
 )
 
 type Book struct {
-	gorm.Model
-	Name     string  `json:"name"`
-	Author   string  `json:"author"`
-	Isbn     string  `json:"isbn"`
-	Isbn13   string  `json:"isbn13"`
-	Genre    string  `json:"genre"`
-	Language string  `json:"language"`
-	DatePub  string  `json:"date_pub"`
-	Pages    string  `json:"pages"`
-	Sinopsis string  `json:"sinopsis"`
-	Price    float64 `json:"price"`
-	Fineamt  float64 `json:"denda"`
+	Id        int64     `gorm:"primaryKey;autoIncrement:false"`
+	CreatedAt time.Time `gorm:"autoCreateTime"`
+	UpdatedAt time.Time `gorm:"autoUpdateTime"`
+	Name      string    `json:"name"`
+	Author    string    `json:"author"`
+	Isbn      string    `json:"isbn"`
+	Isbn13    string    `json:"isbn13"`
+	Genre     string    `json:"genre"`
+	Language  string    `json:"language"`
+	DatePub   string    `json:"date_pub"`
+	Pages     string    `json:"pages"`
+	Sinopsis  string    `json:"sinopsis"`
+	Price     float64   `json:"price"`
+	Fineamt   float64   `json:"denda"`
 }
 
 func (book *Book) Validate() (map[string]interface{}, bool) {
@@ -80,17 +81,10 @@ func Newest() []*Book {
 	return book
 }
 
-//func Popular() []*Book {
-//	book := make([]*Book, 0)
-//
-//	//err := GetDB().Raw("SELECT a.* FROM books a ORDER BY coalesce((SELECT COUNT(book_id) FROM borrowds WHERE book_id = a.id GROUP BY book_id),0) DESC").Find(&book).Error
-//	subQuery := GetDB().Select("book_id").Where("book_id=1").Table("borrowds")
-//	GetDB().Order("() desc").Find(&book)
-//	//fmt.Println(book)
-//	//if err != nil {
-//	//	fmt.Println(err)
-//	//	return nil
-//	//}
-//
-//	return book
-//}
+func Popular() []*Book {
+	bookA := make([]*Book, 0)
+
+	GetDB().Debug().Raw("SELECT a.* FROM books a ORDER BY coalesce((SELECT COUNT(book_id) FROM borrowds WHERE book_id = a.id GROUP BY book_id),0) deSC").Find(&bookA)
+
+	return bookA
+}

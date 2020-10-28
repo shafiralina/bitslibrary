@@ -2,13 +2,15 @@ package models
 
 import (
 	u "bitslibrary/utils"
-	"github.com/jinzhu/gorm"
+	"time"
 )
 
 type Stock struct {
-	gorm.Model
-	Qty    uint `json:"quantity"`
-	BookId uint `json:"book_id"`
+	Id        int64     `gorm:"primaryKey;autoIncrement:false"`
+	CreatedAt time.Time `gorm:"autoCreateTime"`
+	UpdatedAt time.Time `gorm:"autoUpdateTime"`
+	Qty       uint      `json:"quantity"`
+	BookId    uint      `json:"book_id"`
 }
 
 func (stock *Stock) Validate() (map[string]interface{}, bool) {

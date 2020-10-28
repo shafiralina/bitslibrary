@@ -21,7 +21,7 @@ func main() {
 	router.HandleFunc("/api/book/list", controllers.GetBooks).Methods("GET")
 	router.HandleFunc("/api/book/{id}", controllers.GetBook).Methods("GET")
 	router.HandleFunc("/api/newest/book", controllers.GetNewestBooks).Methods("GET")
-	//router.HandleFunc("/api/popular/book", controllers.GetPopularBooks).Methods("GET")
+	router.HandleFunc("/api/popular/book", controllers.GetPopularBooks).Methods("GET")
 	router.HandleFunc("/api/book/update/{id}", controllers.UpdateBook).Methods("PUT")
 	router.HandleFunc("/api/stock/new", controllers.CreateStock).Methods("POST")
 	router.HandleFunc("/api/borrow/new", controllers.CreateBorrow).Methods("POST")
