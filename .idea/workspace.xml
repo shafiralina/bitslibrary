@@ -15,7 +15,10 @@
     </select>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="42461f25-959f-4c5c-82ab-3e8623e9b004" name="Default Changelist" comment="borrow almost done, stocks error" />
+    <list default="true" id="42461f25-959f-4c5c-82ab-3e8623e9b004" name="Default Changelist" comment="borrow almost done, stocks error">
+      <change afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -32,6 +35,9 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GoLibraries">
+    <option name="indexEntireGoPath" value="false" />
+  </component>
   <component name="ProjectId" id="1jG6UDZlu7YYUNAH1geb1IHQmvM" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
@@ -43,6 +49,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="go.import.settings.migrated" value="true" />
+    <property name="go.tried.to.enable.integration.vgo.integrator" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
   <component name="RecentsManager">
@@ -90,7 +97,14 @@
     <MESSAGE value="all done" />
     <option name="LAST_COMMIT_MESSAGE" value="all done" />
   </component>
+  <component name="VgoProject">
+    <integration-enabled>true</integration-enabled>
+  </component>
   <component name="WindowStateProjectService">
+    <state x="475" y="217" key="#Go_Modules" timestamp="1603853680609">
+      <screen x="0" y="0" width="1366" height="768" />
+    </state>
+    <state x="475" y="217" key="#Go_Modules/0.0.1366.768@0.0.1366.768" timestamp="1603853680609" />
     <state x="137" y="38" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1603705884065">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
